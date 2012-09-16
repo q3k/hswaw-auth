@@ -1,3 +1,5 @@
 LDAP_URL = 'ldap://ldap.hackerspace.pl'
 DN_STRING = 'uid=%s,ou=People,dc=hackerspace,dc=pl'
 FAIL_DELAY = 0.5 
+IRC_BASEDN = 'ou=People,dc=hackerspace,dc=pl'
+IRC_LDAP_FILTER = '(&(objectClass=hsMember)(ircNick=%s))'
