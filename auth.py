@@ -32,8 +32,9 @@ def irc_nick():
     conn.start_tls_s()
     login,code = '', 401
     try:
+        nick = re.sub(app.config['STRIP_RE'], '', request.form['nick'])
         res = conn.search_s(app.config['IRC_BASEDN'], ldap.SCOPE_SUBTREE, 
-                app.config['IRC_LDAP_FILTER'] % request.form['nick'])
+                app.config['IRC_LDAP_FILTER'] % nick)
         if len(res) == 1:
             login = res[0][1]['uid'][0]
             code = 200

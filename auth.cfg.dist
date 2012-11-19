@@ -1,3 +1,4 @@
+STRIP_RE = r'[()"\'&|<>=~!]+'
 LDAP_URL = 'ldap://ldap.hackerspace.pl'
 DN_STRING = 'uid=%s,ou=People,dc=hackerspace,dc=pl'
 FAIL_DELAY = 0.5 
