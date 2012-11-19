@@ -1,4 +1,5 @@
 import ldap
+import re
 from flask import Flask, render_template, request, make_response
 from time import sleep
 app = Flask('auth')
