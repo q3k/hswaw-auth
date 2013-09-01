@@ -4,3 +4,7 @@ DN_STRING = 'uid=%s,ou=People,dc=hackerspace,dc=pl'
 FAIL_DELAY = 0.5 
 IRC_BASEDN = 'ou=People,dc=hackerspace,dc=pl'
 IRC_LDAP_FILTER = '(&(objectClass=hsMember)(ircNick=%s))'
+IRC_MIFARE_FILTER = '(&(objectClass=hsMember)(mifareIDHash=%s))'
+
+LDAP_BIND_DN = 'cn=auth,ou=Services,dc=hackerspace,dc=pl'
+LDAP_BIND_PASSWORD = 'insert password here'

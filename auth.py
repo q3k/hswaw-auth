@@ -6,14 +6,18 @@ app = Flask('auth')
 app.config.from_object(__name__)
 app.config.from_pyfile('auth.cfg')
 
+def connect_to_ldap():
+    conn = ldap.initialize(app.config['LDAP_URL'])
+    conn.start_tls_s()
+    conn.simple_bind(app.config['LDAP_BIND_DN'], app.config['LDAP_BIND_PASSWORD'])
+
 @app.route('/', methods=['GET'])
 def form():
     return render_template('login.html')
 
 @app.route('/', methods=['POST'])
 def login():
-    conn = ldap.initialize(app.config['LDAP_URL'])
-    conn.start_tls_s()
+    conn = connect_to_ldap()
     res,code = 'OK', 200
     try:
         conn.simple_bind_s(app.config['DN_STRING'] % request.form['login'],
@@ -29,13 +33,28 @@ def irc_form():
 
 @app.route('/irc', methods=['POST'])
 def irc_nick():
-    conn = ldap.initialize(app.config['LDAP_URL'])
-    conn.start_tls_s()
+    conn = connect_to_ldap()
     login,code = '', 401
     try:
         nick = re.sub(app.config['STRIP_RE'], '', request.form['nick'])
         res = conn.search_s(app.config['IRC_BASEDN'], ldap.SCOPE_SUBTREE, 
                 app.config['IRC_LDAP_FILTER'] % nick)
+        if len(res) == 1:
+            login = res[0][1]['uid'][0]
+            code = 200
+    except ldap.LDAPError as e:
+        print e
+        code = 500
+    return make_response(login, code, { 'Content-Type': 'text/plain' })
+
+@app.route('/mifare', methods=['POST'])
+def mifare():
+    conn = connect_to_ldap()
+    login,code = '', 401
+    try:
+        h = re.sub(app.config['STRIP_RE'], '', request.form['hash'])
+        res = conn.search_s(app.config['MIFARE_BASEDN'], ldap.SCOPE_SUBTREE, 
+                app.config['MIFARE_LDAP_FILTER'] % h)
         if len(res) == 1:
             login = res[0][1]['uid'][0]
             code = 200
