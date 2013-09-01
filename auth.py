@@ -17,7 +17,8 @@ def form():
 
 @app.route('/', methods=['POST'])
 def login():
-    conn = connect_to_ldap()
+    conn = ldap.initialize(app.config['LDAP_URL'])
+    conn.start_tls_s()
     res,code = 'OK', 200
     try:
         conn.simple_bind_s(app.config['DN_STRING'] % request.form['login'],
