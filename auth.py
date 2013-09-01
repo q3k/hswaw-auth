@@ -10,6 +10,7 @@ def connect_to_ldap():
     conn = ldap.initialize(app.config['LDAP_URL'])
     conn.start_tls_s()
     conn.simple_bind(app.config['LDAP_BIND_DN'], app.config['LDAP_BIND_PASSWORD'])
+    return conn
 
 @app.route('/', methods=['GET'])
 def form():
