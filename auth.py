@@ -21,6 +21,10 @@ def login():
     conn = ldap.initialize(app.config['LDAP_URL'])
     conn.start_tls_s()
     res,code = 'OK', 200
+    # hack!
+    if ' ' in request.form['login']:
+        res, code = 'ERROR', 401
+        return make_response(res, code, { 'Content-Type': 'text/plain' })
     try:
         conn.simple_bind_s(app.config['DN_STRING'] % request.form['login'],
                 request.form.get('password', ''))
