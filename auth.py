@@ -35,10 +35,15 @@ def login():
 
 @app.route('/irc', methods=['GET'])
 def irc_form():
+    if not app.config['EXTRA_HSWAW']:
+        return 404
     return render_template('irc.html')
 
 @app.route('/irc', methods=['POST'])
 def irc_nick():
+    if not app.config['EXTRA_HSWAW']:
+        return 404
+
     conn = connect_to_ldap()
     login,code = '', 401
     try:
@@ -55,6 +60,9 @@ def irc_nick():
 
 @app.route('/mifare', methods=['POST'])
 def mifare():
+    if not app.config['EXTRA_HSWAW']:
+        return 404
+
     conn = connect_to_ldap()
     login,code = '', 401
     try:

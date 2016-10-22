@@ -1,0 +1,14 @@
+STRIP_RE = r'[()"\'&|<>=~!]+'
+FAIL_DELY = 0.5
+
+import os
+LDAP_URL = os.environ['LDAP_URL']
+
+EXTRA_HSWAW = os.environ.get('EXTRA_HSWAW', False)
+if EXTRA_HSWAW:
+    LDAP_BIND_DN = os.environ['LDAP_BIND_DN']
+    LDAP_BIND_PASSWORD = os.environ['LDAP_BIND_PASSWORD']
+    DN_STRING = os.environ['DN_STRING']
+    IRC_BASEDN = os.environ['IRC_BASEDN']
+    IRC_LDAP_FILTER = os.environ['IRC_LDAP_FILTER']
+    MIFARE_FILTER = os.environ['MIFARE_FILTER']
